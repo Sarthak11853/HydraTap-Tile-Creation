@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>HydraTap — Tap your bottle, log your water</title>
+  <meta name="description" content="HydraTap is an offline-first water tracker for Android. Tap your phone on the NFC sticker on your bottle and a drink is logged — even with the app closed." />
+  <meta name="theme-color" content="#F2FAFF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#061826" media="(prefers-color-scheme: dark)" />
+  <meta property="og:title" content="HydraTap — Tap your bottle, log your water" />
+  <meta property="og:description" content="An offline-first NFC water tracker for Android. No account, no backend, no ads." />
+  <meta property="og:image" content="assets/img/icon-256.png" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/icon-256.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    try { var t = localStorage.getItem('hydratap-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ Background ============ -->
+  <div class="bg-decor" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+    <div class="bubbles" id="bubbles"></div>
+  </div>
+
+  <!-- ============ Header ============ -->
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Main">
+      <a class="brand" href="#top" aria-label="HydraTap home">
+        <img src="assets/img/icon-256.png" alt="" width="36" height="36" />
+        <span>HydraTap</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#try">Try it</a>
+        <a href="#how">How it works</a>
+        <a href="#reminders">Reminders</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-mobile-only btn btn-primary" href="#download">Download for Android</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+        <a class="icon-btn" href="https://github.com/Sarthak11853/HydraTap" target="_blank" rel="noopener" aria-label="HydraTap on GitHub">
+          <svg viewBox="0 0 24 24" class="fill" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+        </a>
+        <a class="btn btn-primary btn-sm nav-desktop-only" href="#download">Download</a>
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="pill-row reveal">
+          <span class="pill pill-android">
+            <svg viewBox="0 0 24 24" class="fill" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+            Android only
+          </span>
+          <span class="pill">Free &amp; open source</span>
+          <span class="pill">No account</span>
+        </div>
+        <h1 class="reveal">Tap your bottle.<br /><span class="grad-text">Log your water.</span></h1>
+        <p class="lead reveal">
+          HydraTap is a calm, offline-first water tracker. Stick a small NFC sticker on your bottle,
+          tap your phone on it, and a drink is logged — even when the app is closed.
+        </p>
+        <div class="cta-row reveal">
+          <a class="btn btn-primary btn-lg" href="https://github.com/Sarthak11853/HydraTap/releases/latest/download/HydraTap.apk" data-download>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
+            Download APK
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://github.com/Sarthak11853/HydraTap" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="fill" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <p class="micro-note reveal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          For Android phones with NFC. Not available for iPhone.
+        </p>
+
+        <dl class="hero-stats reveal">
+          <div><dt>Setup</dt><dd>5 steps</dd></div>
+          <div><dt>Network calls</dt><dd>0</dd></div>
+          <div><dt>Per tap</dt><dd>&lt; 1 s</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="hero-orbit" aria-hidden="true"></div>
+        <div class="hero-bottle-wrap">
+          <div class="bottle" id="heroBottle" role="img" aria-label="Animated water bottle filling up"></div>
+          <div class="hero-badge hb-1"><span class="dot"></span>+250 ml logged 💧</div>
+          <div class="hero-badge hb-2">🎯 2 L daily goal</div>
+          <div class="hero-badge hb-3">🔔 Next sip at 14:00</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Android-only banner ============ -->
+    <section class="container">
+      <div class="android-banner reveal" id="androidBanner">
+        <div class="ab-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="fill"><path d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+        </div>
+        <div>
+          <h2>Made for Android</h2>
+          <p>HydraTap is distributed as an Android APK only. You'll need an Android phone with NFC to tap-to-log (phones without NFC can still log drinks manually). There's no iPhone build.</p>
+        </div>
+        <p class="ab-device" id="deviceNote" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ============ Features ============ -->
+    <section class="section container" id="features">
+      <header class="section-head reveal">
+        <span class="eyebrow">Features</span>
+        <h2>Everything you need to drink more water.<br />Nothing you don't.</h2>
+        <p>Pick a card to learn more.</p>
+      </header>
+
+      <div class="feature-grid" id="featureGrid">
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">📲</span>
+          <h3>Tap to log</h3>
+          <p>Hold your phone near the sticker on your bottle. One tap = one drink.</p>
+          <div class="f-more"><p>While HydraTap is open, Android's NFC reader mode listens for your sticker. Every tap is checked against your sticker's hardware ID and logged instantly with a soft toast.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🌙</span>
+          <h3>Works with the app closed</h3>
+          <p>No need to open anything. Tap and keep going.</p>
+          <div class="f-more"><p>With the app closed, a tap is logged in the background. You get a small alert like “💧 +250 ml · 1.25 L to go” and a short vibration — the app doesn't even open. Nothing is ever written to your sticker.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🫙</span>
+          <h3>Animated water bottle</h3>
+          <p>A living bottle fills with your real progress.</p>
+          <div class="f-more"><p>Gentle waves and rising bubbles show how far along you are. Reach your goal and the bottle turns teal with a soft glow. Animations pause when the screen isn't visible to save battery, and respect reduced-motion settings.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🔔</span>
+          <h3>Smart reminders</h3>
+          <p>Gentle nudges, only when you need them.</p>
+          <div class="f-more"><p>Set an interval and a start/end window. Reminders use a custom water-drop sound, are skipped for the rest of the day once you hit your goal, and won't fire right after you just drank. They reschedule themselves automatically.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">📊</span>
+          <h3>History &amp; stats</h3>
+          <p>A 7-day chart, daily groups and all-time stats.</p>
+          <div class="f-more"><p>See today's total, the remaining amount and your percentage at a glance. History is grouped by day, with a 7-day chart and all-time stats. Changing your goal later never rewrites the past — every entry remembers its amount and the goal at that moment.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🛡️</span>
+          <h3>Duplicate-tap protection</h3>
+          <p>Double taps don't double count.</p>
+          <div class="f-more"><p>Taps within an 8-second window are recognised as the same drink, and writes are serialised so nothing is ever counted twice.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🏷️</span>
+          <h3>Your sticker only</h3>
+          <p>Pairs with one sticker; every other tag is ignored.</p>
+          <div class="f-more"><p>HydraTap registers your sticker by its hardware UID with one quick tap. Transit cards, other stickers and bank cards are ignored. You can replace or remove your sticker anytime, and a built-in Tap check screen helps you troubleshoot.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">✍️</span>
+          <h3>Manual logging</h3>
+          <p>No NFC? No problem.</p>
+          <div class="f-more"><p>Optional manual logging is available anytime, and it's switched on automatically on devices without NFC — so everyone can use HydraTap.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+
+        <button class="feature reveal" type="button" aria-expanded="false">
+          <span class="f-icon">🔒</span>
+          <h3>Offline &amp; private</h3>
+          <p>No account. No backend. No network requests.</p>
+          <div class="f-more"><p>Everything is stored locally on your phone in a SQLite database. The app makes zero network requests — your hydration is your business.</p></div>
+          <span class="f-plus" aria-hidden="true">+</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ Interactive demo ============ -->
+    <section class="section section-tint" id="try">
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="eyebrow">Try it</span>
+          <h2>Have a sip — right here.</h2>
+          <p>A working preview of the app. Tap the sticker, close the app, try a stranger tag, or switch to History.</p>
+        </header>
+
+        <div class="demo">
+          <!-- Phone -->
+          <div class="phone-col reveal">
+            <div class="phone" id="phone">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <div class="phone-status" aria-hidden="true">
+                <span id="phoneClock">9:41</span>
+                <span class="ps-icons">
+                  <svg viewBox="0 0 24 24" class="fill"><path d="M2 18h3v3H2zM7 14h3v7H7zM12 10h3v11h-3zM17 6h3v15h-3z"/></svg>
+                  <span class="nfc-ind" title="NFC on">N</span>
+                  <svg viewBox="0 0 24 24" class="fill"><rect x="2" y="7" width="18" height="10" rx="2"/><rect x="21" y="10" width="1.5" height="4" rx=".7"/></svg>
+                </span>
+              </div>
+
+              <!-- App screen -->
+              <div class="screen app-screen" id="appScreen">
+                <div class="tab-panel is-active" id="tabHome" role="tabpanel" aria-labelledby="tabBtnHome">
+                  <p class="as-date" id="asDate">Thursday, 5 November</p>
+                  <p class="as-greet"><span id="asGreeting">Good morning</span>,</p>
+                  <p class="as-name" id="asName">Friend</p>
+
+                  <div class="as-bottle">
+                    <div class="bottle" id="demoBottle" role="img" aria-label="Water bottle"></div>
+                    <div class="as-bottle-label" id="bottleLabel">
+                      <strong id="bottleTotal">0 ml</strong>
+                      <span id="bottleSub">of 2 L</span>
+                    </div>
+                  </div>
+
+                  <div class="goal-banner" id="goalBanner" hidden>🎉 Daily goal achieved — well done!</div>
+
+                  <div class="as-stats">
+                    <div><small>TODAY</small><b id="statToday">0 ml</b></div>
+                    <div><small>LEFT</small><b id="statLeft">2 L</b></div>
+                    <div><small>DONE</small><b id="statPct">0%</b></div>
+                  </div>
+
+                  <div class="as-card">
+                    <span class="as-card-ic">📲</span>
+                    <div>
+                      <b>Ready — tap your bottle</b>
+                      <small id="asReadyText">Each tap adds 250 ml</small>
+                    </div>
+                    <span class="paired" id="pairedChip">Paired</span>
+                  </div>
+
+                  <div class="as-sips">
+                    <p class="as-h">Today's sips</p>
+                    <ul id="sipList"><li class="empty">No sips yet — tap the sticker below.</li></ul>
+                  </div>
+                </div>
+
+                <div class="tab-panel" id="tabHistory" role="tabpanel" aria-labelledby="tabBtnHistory" hidden>
+                  <p class="as-title">History</p>
+                  <div class="as-card col">
+                    <div class="chart-head"><b>Last 7 days</b><small id="chartAvg">avg 0 ml</small></div>
+                    <div class="chart" id="weekChart" role="img" aria-label="Seven day intake chart"></div>
+                  </div>
+                  <div class="as-stats">
+                    <div><small>ALL-TIME</small><b id="statAll">0 L</b></div>
+                    <div><small>GOAL DAYS</small><b id="statGoalDays">0</b></div>
+                    <div><small>TAPS</small><b id="statTaps">0</b></div>
+                  </div>
+                  <div class="as-sips" id="historyGroups"></div>
+                </div>
+
+                <nav class="as-tabs" role="tablist" aria-label="App tabs">
+                  <button role="tab" id="tabBtnHome" aria-selected="true" aria-controls="tabHome" data-tab="tabHome">
+                    <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home
+                  </button>
+                  <button role="tab" id="tabBtnHistory" aria-selected="false" aria-controls="tabHistory" data-tab="tabHistory">
+                    <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>History
+                  </button>
+                </nav>
+              </div>
+
+              <!-- Launcher (app closed) -->
+              <div class="screen launcher" id="launcher" hidden>
+                <div class="launcher-clock"><b id="launcherTime">9:41</b><span id="launcherDate">Thu, 5 Nov</span></div>
+                <div class="launcher-grid">
+                  <span class="app-ic" style="--c:#fca5a5">📷</span>
+                  <span class="app-ic" style="--c:#fde68a">✉️</span>
+                  <span class="app-ic" style="--c:#a7f3d0">🗺️</span>
+                  <button class="app-ic hydratap-ic" id="openAppIcon" type="button" aria-label="Open HydraTap"><img src="assets/img/icon-256.png" alt="" /></button>
+                </div>
+                <p class="launcher-hint">HydraTap is closed. Tap the sticker anyway!</p>
+              </div>
+
+              <!-- In-phone toast -->
+              <div class="phone-toast" id="phoneToast" role="status" aria-live="polite">
+                <span class="pt-ic" id="ptIcon">💧</span>
+                <div><b id="ptTitle">+250 ml logged</b><small id="ptMsg">1.75 L to go today</small></div>
+              </div>
+              <!-- Android-style system toast (closed app) -->
+              <div class="sys-toast" id="sysToast" role="status" aria-live="polite"></div>
+            </div>
+
+            <!-- NFC sticker -->
+            <div class="sticker-area">
+              <button class="sticker" id="stickerBtn" type="button" aria-describedby="stickerHint">
+                <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                <span class="sticker-face">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8.5a5 5 0 0 1 0 7M9 6a8.5 8.5 0 0 1 0 12M3 11a1.5 1.5 0 0 1 0 2"/><path d="M14 5h5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-5"/></svg>
+                  <b>Tap</b>
+                </span>
+              </button>
+              <p class="sticker-hint" id="stickerHint">Your bottle's NFC sticker — tap it, or press <kbd>T</kbd></p>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="controls reveal">
+            <div class="ctrl-card">
+              <div class="ctrl-row">
+                <div>
+                  <h3>App state</h3>
+                  <p>Closed-app taps are logged in the background.</p>
+                </div>
+                <div class="seg" role="radiogroup" aria-label="App state">
+                  <button type="button" role="radio" aria-checked="true" data-app="open">Open</button>
+                  <button type="button" role="radio" aria-checked="false" data-app="closed">Closed</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ctrl-card">
+              <h3>Daily goal <output id="goalOut">2 L</output></h3>
+              <div class="chips" id="goalChips" role="radiogroup" aria-label="Daily goal"></div>
+            </div>
+
+            <div class="ctrl-card">
+              <h3>Amount per tap <output id="amountOut">250 ml</output></h3>
+              <div class="chips" id="amountChips" role="radiogroup" aria-label="Amount per tap"></div>
+              <p class="hint" id="tapsHint">About 8 taps to reach 2 L</p>
+            </div>
+
+            <div class="ctrl-card">
+              <h3>Your name</h3>
+              <input class="input" id="nameInput" type="text" maxlength="20" placeholder="What should we call you?" autocomplete="off" />
+            </div>
+
+            <div class="ctrl-card ctrl-actions">
+              <button class="btn btn-soft" type="button" id="strangerBtn">🎫 Tap a stranger tag</button>
+              <button class="btn btn-soft" type="button" id="manualBtn">✍️ Log manually</button>
+              <button class="btn btn-soft" type="button" id="undoBtn">↩︎ Undo last</button>
+              <button class="btn btn-soft" type="button" id="resetBtn">⟲ Reset day</button>
+            </div>
+
+            <ul class="event-log" id="eventLog" aria-live="polite" aria-label="Demo activity"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ How it works ============ -->
+    <section class="section container" id="how">
+      <header class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>Set up in about a minute.</h2>
+        <p>Onboarding walks you through five friendly steps.</p>
+      </header>
+
+      <div class="steps reveal">
+        <div class="steps-nav" role="tablist" aria-label="Setup steps" id="stepsNav">
+          <button role="tab" aria-selected="true" data-step="0"><span>1</span>Your name</button>
+          <button role="tab" aria-selected="false" data-step="1"><span>2</span>Daily goal</button>
+          <button role="tab" aria-selected="false" data-step="2"><span>3</span>Per tap</button>
+          <button role="tab" aria-selected="false" data-step="3"><span>4</span>Pair sticker</button>
+          <button role="tab" aria-selected="false" data-step="4"><span>5</span>Reminders</button>
+          <span class="steps-progress" id="stepsProgress" aria-hidden="true"></span>
+        </div>
+
+        <div class="steps-body">
+          <article class="step is-active" data-step="0">
+            <div class="step-art">👋</div>
+            <div>
+              <h3>Say hello</h3>
+              <p>Tell HydraTap what to call you. Your name stays on your phone and is only used for a friendly greeting.</p>
+            </div>
+          </article>
+          <article class="step" data-step="1" hidden>
+            <div class="step-art">🎯</div>
+            <div>
+              <h3>Pick a daily goal</h3>
+              <p>Choose from presets — 1.5 L, 2 L, 2.5 L, 3 L, 3.5 L — or fine-tune with the stepper. You can change it later without touching your history.</p>
+            </div>
+          </article>
+          <article class="step" data-step="2" hidden>
+            <div class="step-art">🥤</div>
+            <div>
+              <h3>Set the amount per tap</h3>
+              <p>How much is one sip from your bottle? From 150 ml up to 1 L. HydraTap tells you roughly how many taps it takes to reach your goal.</p>
+            </div>
+          </article>
+          <article class="step" data-step="3" hidden>
+            <div class="step-art">🏷️</div>
+            <div>
+              <h3>Pair your sticker</h3>
+              <p>Stick a blank NFC sticker (NTAG213/215/216 or MIFARE Ultralight) on your bottle, then tap once. HydraTap remembers its hardware ID and ignores every other tag.</p>
+            </div>
+          </article>
+          <article class="step" data-step="4" hidden>
+            <div class="step-art">🔔</div>
+            <div>
+              <h3>Choose your reminders</h3>
+              <p>Pick how often and between which hours you'd like a gentle nudge — or skip reminders entirely. That's it, you're ready to tap.</p>
+            </div>
+          </article>
+          <div class="steps-ctrl">
+            <button class="btn btn-ghost btn-sm" type="button" id="stepPrev">← Back</button>
+            <button class="btn btn-primary btn-sm" type="button" id="stepNext">Next →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Reminders planner ============ -->
+    <section class="section section-tint" id="reminders">
+      <div class="container">
+        <header class="section-head reveal">
+          <span class="eyebrow">Reminders</span>
+          <h2>Plan your gentle nudges.</h2>
+          <p>Drag the controls to see when HydraTap would remind you today.</p>
+        </header>
+
+        <div class="planner reveal">
+          <div class="planner-ctrls">
+            <label class="field">
+              <span>Every <output id="intervalOut">60 min</output></span>
+              <input type="range" id="intervalRange" min="30" max="180" step="15" value="60" />
+            </label>
+            <label class="field">
+              <span>From <output id="startOut">08:00</output></span>
+              <input type="range" id="startRange" min="300" max="720" step="30" value="480" />
+            </label>
+            <label class="field">
+              <span>Until <output id="endOut">21:00</output></span>
+              <input type="range" id="endRange" min="900" max="1410" step="30" value="1260" />
+            </label>
+            <label class="switch">
+              <input type="checkbox" id="goalReachedToggle" />
+              <span class="sw-track"><span class="sw-thumb"></span></span>
+              <span>Goal already reached today</span>
+            </label>
+          </div>
+          <div class="planner-out">
+            <div class="timeline" id="timeline" aria-hidden="true"></div>
+            <div class="slots" id="slots"></div>
+            <p class="planner-summary" id="plannerSummary"></p>
+            <div class="notif-preview">
+              <img src="assets/img/icon-256.png" alt="" width="36" height="36" />
+              <div>
+                <small>HydraTap · now</small>
+                <b>Time for some water!</b>
+                <span id="notifText">1.25 L left to reach your goal.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Privacy ============ -->
+    <section class="section container" id="privacy">
+      <div class="privacy reveal">
+        <div class="privacy-art" aria-hidden="true">
+          <div class="shield">🔒</div>
+          <span class="orbit o1">☁️<i></i></span>
+          <span class="orbit o2">👤<i></i></span>
+          <span class="orbit o3">📡<i></i></span>
+        </div>
+        <div>
+          <span class="eyebrow">Privacy</span>
+          <h2>Your data never leaves your phone.</h2>
+          <ul class="checks">
+            <li><b>No account.</b> Open the app and start — no sign-up, no email.</li>
+            <li><b>No backend.</b> There's no server. Everything is stored locally in SQLite.</li>
+            <li><b>No network requests.</b> The app doesn't talk to the internet at all.</li>
+            <li><b>Nothing written to your sticker.</b> HydraTap only reads its hardware ID.</li>
+            <li><b>Open source.</b> Every line is on GitHub for you to read.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Download ============ -->
+    <section class="section" id="download">
+      <div class="container">
+        <div class="download reveal">
+          <div class="dl-copy">
+            <span class="eyebrow light">Download</span>
+            <h2>Get HydraTap for Android</h2>
+            <p>Free, open source and ad-free. The APK is built automatically from the source code by GitHub Actions.</p>
+
+            <div class="cta-row">
+              <a class="btn btn-white btn-lg" href="https://github.com/Sarthak11853/HydraTap/releases/latest/download/HydraTap.apk" data-download>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
+                Download HydraTap.apk
+              </a>
+              <a class="btn btn-outline-white btn-lg" href="https://github.com/Sarthak11853/HydraTap" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" class="fill" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+                Source code
+              </a>
+            </div>
+
+            <div class="req">
+              <span>🤖 Android only</span>
+              <span>📶 NFC recommended</span>
+              <span>🏷️ Blank NTAG213/215/216 sticker</span>
+            </div>
+
+            <ol class="install-steps">
+              <li><span><b>Download</b> the APK on your Android phone.</span></li>
+              <li><span><b>Allow</b> “Install unknown apps” for your browser when asked.</span></li>
+              <li><span><b>Open</b> HydraTap, finish setup and tap your bottle!</span></li>
+            </ol>
+          </div>
+
+          <div class="dl-qr" id="qrBox">
+            <div class="qr-card">
+              <div class="qr"><img src="assets/img/download-qr.svg" width="160" height="160" alt="QR code that downloads the HydraTap APK" /></div>
+              <p>On a computer? Scan with your Android phone to download.</p>
+              <button class="btn btn-outline-white btn-sm" type="button" id="copyLink">Copy download link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section container" id="faq">
+      <header class="section-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions, answered.</h2>
+      </header>
+      <div class="faq reveal">
+        <details>
+          <summary>Is HydraTap available for iPhone?</summary>
+          <p>No. HydraTap is available for Android only, as a downloadable APK. There is no App Store or iPhone build.</p>
+        </details>
+        <details>
+          <summary>Which NFC stickers work?</summary>
+          <p>Common NFC stickers — NTAG213, NTAG215, NTAG216 and MIFARE Ultralight. For closed-app logging, use a <b>blank</b> sticker: if a sticker holds a website link, Android sends the tap to your browser first. In-app taps work with any sticker.</p>
+        </details>
+        <details>
+          <summary>Does it work when the screen is locked?</summary>
+          <p>With the screen off, Android doesn't power the NFC reader, so no app can read tags. On the lock screen, it depends on your phone: on Android 12+ you can turn off <i>Require device unlock for NFC</i> under Settings → Connected devices → Connection preferences → NFC (Samsung: Connections → NFC).</p>
+        </details>
+        <details>
+          <summary>My phone doesn't have NFC. Can I still use it?</summary>
+          <p>Yes. Manual logging switches on automatically on devices without NFC, so you can add drinks with a button. You still get the animated bottle, reminders and history.</p>
+        </details>
+        <details>
+          <summary>Android says "Install blocked" or "Unknown app". Is it safe?</summary>
+          <p>Android shows this for any app installed outside the Play Store. The APK is built from the public source code by GitHub Actions, so you can see exactly what's in it. Allow "Install unknown apps" for your browser to continue.</p>
+        </details>
+        <details>
+          <summary>Android shows its own "Empty tag" screen when I tap.</summary>
+          <p>Another app (often the system tag viewer) claimed the sticker first. If Android asks which app to use, choose HydraTap → <i>Always</i>. You can also check the sticker under Settings → Tap check inside the app.</p>
+        </details>
+        <details>
+          <summary>Does HydraTap collect any data?</summary>
+          <p>No. There's no account and no server, and the app makes no network requests. Your data lives only on your phone.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="brand">
+        <img src="assets/img/icon-256.png" alt="" width="32" height="32" />
+        <span>HydraTap</span>
+      </div>
+      <p>An offline-first NFC water tracker · Android only</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://github.com/Sarthak11853/HydraTap/releases/latest/download/HydraTap.apk" data-download>Download APK</a>
+        <a href="https://github.com/Sarthak11853/HydraTap" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/Sarthak11853/HydraTap/releases" target="_blank" rel="noopener">Releases</a>
+        <a href="#top">Back to top ↑</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Site toast -->
+  <div class="site-toast" id="siteToast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
